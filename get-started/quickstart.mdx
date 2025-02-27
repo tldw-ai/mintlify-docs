@@ -3,22 +3,26 @@
 
 Get started with AI video intelligence in less than 5 minutes. This guide helps you:
 
-- Obtain your API key
-- Create a collection
-- Upload a video for indexing
-- Query the video or an entire collection
+* Obtain your API key
+
+* Create a collection
+
+* Upload a video for indexing
+
+* Query the video or an entire collection
 
 By the end, you’ll have made your first successful API calls and received AI-driven insights.
 
 ### Prerequisites
 
-- A command-line tool like `curl` (installed by default on most Unix-based systems)
-- [An API key from your account settings. Click here to get one.](https://app.trytldw.ai/account?tab=settings)
+* A command-line tool like `curl` (installed by default on most Unix-based systems)
+
+* [An API key from your account settings. Click here to get one.](https://app.trytldw.ai/account?tab=settings)
 
 **Set your API key:**
 
 ```bash
-export API_KEY="3726e6ad1c6ce2eb643a268ea2f4682686c9ce33e28561ped915cbf1dbe7ab52"
+export API_KEY="<YOUR_API_KEY>"
 ```
 
 ### Create a Collection
@@ -45,7 +49,7 @@ curl -X POST 'https://api.trytldw.ai/v1/collections/' \
 Provide the video’s URL and the collection ID. The AI will index this video so it can be queried later.
 Note: the URL must point directly at a video file (eg the url ends in a video file extension)
 
-Feel free to use this video: https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4
+Feel free to use this video: [https://storage.googleapis.com/tldr-public/static/never\_gonna\_give\_you\_up.mp4](https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4)
 
 ```bash title="Request"
 curl -X POST 'https://api.trytldw.ai/v1/media/' \
@@ -91,7 +95,7 @@ curl -X GET 'https://api.trytldw.ai/v1/collections/collection_12345/media' \
 
 ### Query a Single Video
 
-Ask questions like “What topics are discussed at 10 minutes?” by providing the media_ids array with a single video’s ID.
+Ask questions like “What topics are discussed at 10 minutes?” by providing the media\_ids array with a single video’s ID.
 
 ```bash title="Request"
 curl -X POST 'https://api.trytldw.ai/v1/query/media' \
@@ -124,11 +128,11 @@ curl -X POST 'https://api.trytldw.ai/v1/query/media' \
 
 Search across all videos in a collection.
 
-Feel free to add these to the collection:<br/>
-https://storage.googleapis.com/tldr-public/static/baseball_goose.mp4 <br/>
-https://storage.googleapis.com/tldr-public/static/basketball_game.webm <br/>
-https://storage.googleapis.com/tldr-public/static/keyboard_cat.webm <br/>
-https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4 <br/>
+Feel free to add these to the collection:<br />
+[https://storage.googleapis.com/tldr-public/static/baseball\_goose.mp4](https://storage.googleapis.com/tldr-public/static/baseball_goose.mp4) <br />
+[https://storage.googleapis.com/tldr-public/static/basketball\_game.webm](https://storage.googleapis.com/tldr-public/static/basketball_game.webm) <br />
+[https://storage.googleapis.com/tldr-public/static/keyboard\_cat.webm](https://storage.googleapis.com/tldr-public/static/keyboard_cat.webm) <br />
+[https://storage.googleapis.com/tldr-public/static/never\_gonna\_give\_you\_up.mp4](https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4) <br />
 
 ```bash title="Request"
 curl -X POST 'https://api.trytldw.ai/v1/query/collection' \
@@ -161,4 +165,4 @@ curl -X POST 'https://api.trytldw.ai/v1/query/collection' \
 
 Congratulations! Explore our Full API Reference for more endpoint details.
 
-<u>[Explore our full API reference here](/category/tldw-api).</u>
+[Explore our full API reference here](/category/tldw-api)<u>.</u>
