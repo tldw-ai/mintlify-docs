@@ -483,8 +483,7 @@
     "/search/": {
       "post": {
         "tags": [
-          "Search Video Moments",
-          "Search"
+          "Search Video Moments"
         ],
         "summary": "Search within video(s)",
         "operationId": "search_search__post",
@@ -624,16 +623,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/src__public_api__widget_router__EmbedMediaRequest"
-                  }
-                ],
+                "$ref": "#/components/schemas/src__public_api__widget_router__EmbedMediaRequest",
                 "description": "Config to enable/disable widget",
                 "default": {
                   "enabled": true
-                },
-                "title": "Input"
+                }
               }
             }
           }
@@ -867,11 +861,7 @@
             ]
           },
           "pagination": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Pagination"
-              }
-            ],
+            "$ref": "#/components/schemas/Pagination",
             "examples": [
               {
                 "page": 0,
@@ -1076,11 +1066,7 @@
             ]
           },
           "status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MediaStatus"
-              }
-            ],
+            "$ref": "#/components/schemas/MediaStatus",
             "description": "The status of the video understanding (e.g. indexing, embedding) job"
           }
         },
@@ -1117,11 +1103,7 @@
             ]
           },
           "status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MediaStatus"
-              }
-            ],
+            "$ref": "#/components/schemas/MediaStatus",
             "description": "The status of the video understanding (e.g. indexing, embedding) job"
           },
           "collection_id": {
@@ -1230,7 +1212,7 @@
               }
             ],
             "title": "Metadata",
-            "description": "User-defined media metadata, including ownership, geo location, etc.",
+            "description": "User-defined media metadata, including ownership, geo location, etc. Key names can NOT start with underscore",
             "examples": [
               {
                 "location": {
