@@ -30,7 +30,7 @@
           "Index or Embed Videos"
         ],
         "summary": "Index video(s) in a collection",
-        "description": "Add videos to a collection for indexing. The videos will be indexed and made searchable. Indexing status or embedding of the video can be retrieved from [get media endpoint](https://docs.trytldw.ai/api-reference/index-or-embed-videos/get-embedding-and-metadata-of-video) \n The videos must be http(s) url to raw video files (e.g. mp4, mov, avi) and not web pages or cloud storage services URIs.  The videos url must be http(s) url to raw video files (e.g. mp4, mov, avi); Youtube web pages or cloud storage services URIs would not work.",
+        "description": "Add videos to a collection for indexing. The videos will be indexed and made searchable. Indexing status or embedding of the video can be retrieved from [get media endpoint](/api-reference/index-or-embed-videos/get-processing-status-embedding-and-metadata-of-video) \n The videos must be http(s) url to raw video files (e.g. mp4, mov, avi) and not web pages or cloud storage services URIs.  The videos url must be http(s) url to raw video files (e.g. mp4, mov, avi); Youtube web pages or cloud storage services URIs would not work.",
         "operationId": "create_media_media__post",
         "requestBody": {
           "content": {
@@ -152,7 +152,7 @@
           "Index or Embed Videos"
         ],
         "summary": "Generate embedding for video",
-        "description": "Generates embeddings for video in the same latent space as text, so that it is possible to perform text-to-video searches by embedding the text and comparing it to the video embeddings. \n Embedding results can be retrieved from [get media endpoint](https://docs.trytldw.ai/api-reference/index-or-embed-videos/get-embedding-and-metadata-of-video) \n The videos url must be http(s) url to raw video files (e.g. mp4, mov, avi); Youtube web pages or cloud storage services URIs would not work.",
+        "description": "Generates embeddings for video in the same latent space as text, so that it is possible to perform text-to-video searches by embedding the text and comparing it to the video embeddings. \n Embedding results can be retrieved from [get media endpoint](/api-reference/index-or-embed-videos/get-processing-status-embedding-and-metadata-of-video) \n The videos url must be http(s) url to raw video files (e.g. mp4, mov, avi); Youtube web pages or cloud storage services URIs would not work.",
         "operationId": "embed_media_media_embed_post",
         "requestBody": {
           "content": {
