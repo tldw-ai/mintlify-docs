@@ -1,0 +1,164 @@
+---
+---
+
+Get started with AI video intelligence in less than 5 minutes. This guide helps you:
+
+- Obtain your API key
+- Create a collection
+- Upload a video for indexing
+- Query the video or an entire collection
+
+By the end, you’ll have made your first successful API calls and received AI-driven insights.
+
+### Prerequisites
+
+- A command-line tool like `curl` (installed by default on most Unix-based systems)
+- [An API key from your account settings. Click here to get one.](https://app.trytldw.ai/account?tab=settings)
+
+**Set your API key:**
+
+```bash
+export API_KEY="3726e6ad1c6ce2eb643a268ea2f4682686c9ce33e28561ped915cbf1dbe7ab52"
+```
+
+### Create a Collection
+
+A collection is a container for your videos. Let’s create one named `My First Collection`.
+
+```bash title="Request"
+curl -X POST 'https://api.trytldw.ai/v1/collections/' \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{
+           "name": "My First Collection"
+         }'
+```
+
+```json title="Response"
+{
+  "id": "c7a150ea-744b-4043-b86b-635728daa3a3"
+}
+```
+
+### Upload a Video to the Collection
+
+Provide the video’s URL and the collection ID. The AI will index this video so it can be queried later.
+Note: the URL must point directly at a video file (eg the url ends in a video file extension)
+
+Feel free to use this video: https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4
+
+```bash title="Request"
+curl -X POST 'https://api.trytldw.ai/v1/media/' \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{
+           "media_url": "https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4",
+           "collection_id": "c7a150ea-744b-4043-b86b-635728daa3a3",
+           "title": "Rick Astley"
+         }'
+```
+
+```json title="Response"
+{
+  "id": "a0ac4924-5c7f-4d0a-940c-568698cd29cb",
+  "title": "My Example Video",
+  "index_status": "PROCESSING",
+  "collection_id": "c7a150ea-744b-4043-b86b-635728daa3a3"
+}
+```
+
+### Check Video Indexing Progress
+
+Indexing might take a moment. Check the status with the collection ID.
+
+```bash title="Request"
+curl -X GET 'https://api.trytldw.ai/v1/collections/collection_12345/media' \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer $API_KEY"
+```
+
+```json title="Response"
+[
+  {
+    "id": "a0ac4924-5c7f-4d0a-940c-568698cd29cb",
+    "title": "Rick Astley",
+    "index_status": "COMPLETED",
+    "collection_id": "c7a150ea-744b-4043-b86b-635728daa3a3"
+    ...
+  }
+]
+```
+
+### Query a Single Video
+
+Ask questions like “What topics are discussed at 10 minutes?” by providing the media_ids array with a single video’s ID.
+
+```bash title="Request"
+curl -X POST 'https://api.trytldw.ai/v1/query/media' \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{
+           "query": "find a person doing a backflip",
+           "media_ids": ["a0ac4924-5c7f-4d0a-940c-568698cd29cb"]
+         }'
+```
+
+```json title="Response"
+{
+    "media_hits": {
+        "a0ac4924-5c7f-4d0a-940c-568698cd29cb": [
+            {
+                "media_uuid": "a0ac4924-5c7f-4d0a-940c-568698cd29cb",
+                "segment_start_ms": 30000.0,
+                "segment_end_ms": 32000.0,
+                "score": 0.8939065098762512,
+            },
+            ...
+        ]
+    },
+    "metadata": {}
+}
+```
+
+### Query an Entire Collection
+
+Search across all videos in a collection.
+
+Feel free to add these to the collection:<br/>
+https://storage.googleapis.com/tldr-public/static/baseball_goose.mp4 <br/>
+https://storage.googleapis.com/tldr-public/static/basketball_game.webm <br/>
+https://storage.googleapis.com/tldr-public/static/keyboard_cat.webm <br/>
+https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4 <br/>
+
+```bash title="Request"
+curl -X POST 'https://api.trytldw.ai/v1/query/collection' \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer $API_KEY" \
+     -d '{
+           "query": "find a flying bird",
+           "collection_id": "394d9ecd-9127-4626-92f0-f8754de77696"
+         }'
+```
+
+```json title="Response"
+{
+    "media_hits": {
+        "c7adc81b-d404-4c84-96d1-4e19d736e21c": [
+            {
+                "media_uuid": "c7adc81b-d404-4c84-96d1-4e19d736e21c",
+                "segment_start_ms": 294000.0,
+                "segment_end_ms": 296000.0,
+                "score": 0.90886325687170029,
+            },
+            ...
+        ]
+    },
+    "metadata": {}
+}
+```
+
+### Next Steps
+
+Congratulations! Explore our Full API Reference for more endpoint details.
+
+<u>[Explore our full API reference here](/category/tldw-api).</u>

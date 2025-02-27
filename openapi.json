@@ -1,0 +1,1529 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "tl;dw",
+    "version": "0.0.1",
+    "x-logo": {
+      "url": "https://app.trytldw.ai/static/images/sidebar_logo.svg",
+      "backgroundColor": "transparent",
+      "altText": "tl;dw Logo"
+    },
+    "contact": {
+      "name": "tl;dw Support",
+      "url": "https://app.trytldw.ai/support"
+    },
+    "termsOfService": "https://app.trytldw.ai/terms",
+    "x-apisguru-categories": [
+      "video",
+      "ai"
+    ]
+  },
+  "servers": [
+    {
+      "url": "https://api.trytldw.ai/v1"
+    }
+  ],
+  "paths": {
+    "/media/embed": {
+      "post": {
+        "tags": [
+          "Index or Embed Videos"
+        ],
+        "summary": "Generate embedding for video",
+        "description": "Generates embeddings for video in the same latent space as text, so that it is possible to perform text-to-video searches by embedding the text and comparing it to the video embeddings. The videos must be http(s) url to raw video files (e.g. mp4, mov, avi) and not web pages or cloud storage services URIs.",
+        "operationId": "embed_media_media_embed_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/src__public_api__media_router__EmbedMediaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/src__public_api__media_router__EmbedMediaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/media/": {
+      "post": {
+        "tags": [
+          "Index or Embed Videos"
+        ],
+        "summary": "Add videos to a collection for indexing",
+        "description": "Add videos to a collection for indexing. The videos will be indexed and made searchable. The videos must be http(s) url to raw video files (e.g. mp4, mov, avi) and not web pages or cloud storage services URIs.",
+        "operationId": "create_media_media__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexMediaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexMediaResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Collection not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Insufficient balance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Index or Embed Videos"
+        ],
+        "summary": "Delete videos by ID",
+        "description": "Warning: this action is irreversible. Data about the media will be lost. Only videos owned by the user can be deleted. To delete all videos in a collection, delete the collection instead.",
+        "operationId": "delete_media_media__delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteMediaRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteMediaResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Too many media IDs provided; Up to 100 media can be deleted at a time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/media/{media_id}": {
+      "get": {
+        "tags": [
+          "Index or Embed Videos"
+        ],
+        "summary": "Get embedding and metadata of video ",
+        "description": "Get embedding, metadata and processing status for a video",
+        "operationId": "get_media_media__media_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "media_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Media Id"
+            }
+          },
+          {
+            "name": "retrieve_embedding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Retrieve Embedding"
+            }
+          },
+          {
+            "name": "retrieve_description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Retrieve Description"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaWithSegments"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Media not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/": {
+      "get": {
+        "tags": [
+          "Manage a Collection"
+        ],
+        "summary": "List all collections",
+        "operationId": "list_collections_collections__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListCollectionsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Manage a Collection"
+        ],
+        "summary": "Create a new collection",
+        "operationId": "create_collection_collections__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCollectionsInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCollectionsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/collections/{collection_id}/media": {
+      "get": {
+        "tags": [
+          "Manage a Collection"
+        ],
+        "summary": "Retrieve all media in a collection",
+        "operationId": "get_collection_collections__collection_id__media_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "collection_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Collection Id"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "The page number to retrieve (0-indexed)",
+              "default": 0,
+              "title": "Page"
+            },
+            "description": "The page number to retrieve (0-indexed)"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "The number of results per page",
+              "default": 50,
+              "title": "Page Size"
+            },
+            "description": "The number of results per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCollectionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Collection not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{collection_id}": {
+      "delete": {
+        "tags": [
+          "Manage a Collection"
+        ],
+        "summary": "Delete a collection",
+        "description": "Warning: All indexed media in the collection will be deleted as well",
+        "operationId": "delete_collection_collections__collection_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "collection_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The ID of the collection to delete",
+              "title": "Collection Id"
+            },
+            "description": "The ID of the collection to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Collection not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search/": {
+      "post": {
+        "tags": [
+          "Search Video Moments",
+          "Search"
+        ],
+        "summary": "Search within video(s)",
+        "operationId": "search_search__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchParams"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Up to 200 videos can be queried at a time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "no media ids provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/text/embed": {
+      "post": {
+        "tags": [
+          "Generate Text Embedding"
+        ],
+        "summary": "Generate embedding for text",
+        "description": "Generates embeddings for text in the same latent space as video, so that it is possible to perform text-to-video searches by embedding the text and comparing it to the video embeddings.",
+        "operationId": "embed_text_text_embed_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmbedTextRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmbedTextResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/widget/media/{media_id}": {
+      "put": {
+        "tags": [
+          "Embed UI Widget"
+        ],
+        "summary": "Enable/disable embeded search widget for media",
+        "description": "Enable/disable embeded search widget for media. Returns embed link if enabled. Embed link is in the form of https://app.trytldw.ai/embed/media/{media_id} which can be put in an iframe, and you can add hide_tags=true and hide_segment_desc=true to hide unwanted section as needed.",
+        "operationId": "update_media_widget_widget_media__media_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "media_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Id of media to config widget",
+              "title": "Media Id"
+            },
+            "description": "Id of media to config widget"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/src__public_api__widget_router__EmbedMediaRequest"
+                  }
+                ],
+                "description": "Config to enable/disable widget",
+                "default": {
+                  "enabled": true
+                },
+                "title": "Input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/src__public_api__widget_router__EmbedMediaResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Media not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Collection": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": [
+              "Collection 1"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "Collection"
+      },
+      "CreateCollectionsInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": [
+              "New Collection"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CreateCollectionsInput"
+      },
+      "CreateCollectionsResponse": {
+        "properties": {
+          "collection_id": {
+            "type": "string",
+            "title": "Collection Id",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "collection_id"
+        ],
+        "title": "CreateCollectionsResponse"
+      },
+      "DeleteMediaRequest": {
+        "properties": {
+          "media_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Media Ids",
+            "description": "The IDs of the media to delete. Maximum 200 media can be deleted per request",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "media_ids"
+        ],
+        "title": "DeleteMediaRequest"
+      },
+      "DeleteMediaResponse": {
+        "properties": {
+          "media_deleted": {
+            "type": "integer",
+            "title": "Media Deleted",
+            "description": "Number of media successfully deleted",
+            "examples": [
+              1
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "media_deleted"
+        ],
+        "title": "DeleteMediaResponse"
+      },
+      "EmbedTextRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The text to embed. Max length 300 characters",
+            "examples": [
+              "People walking on the street"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "EmbedTextRequest"
+      },
+      "EmbedTextResponse": {
+        "properties": {
+          "embedding": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Embedding",
+            "description": "The embedding of the text, a list of 512 floats"
+          }
+        },
+        "type": "object",
+        "required": [
+          "embedding"
+        ],
+        "title": "EmbedTextResponse"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorResponse"
+      },
+      "Fragment": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "title": "Uuid"
+          },
+          "start_ms": {
+            "type": "number",
+            "title": "Start Ms"
+          },
+          "end_ms": {
+            "type": "number",
+            "title": "End Ms"
+          },
+          "similarity": {
+            "type": "number",
+            "title": "Similarity"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uuid",
+          "start_ms",
+          "end_ms",
+          "similarity",
+          "description"
+        ],
+        "title": "Fragment"
+      },
+      "GetCollectionResponse": {
+        "properties": {
+          "media": {
+            "items": {
+              "$ref": "#/components/schemas/MediaStub"
+            },
+            "type": "array",
+            "title": "Media",
+            "examples": [
+              [
+                {
+                  "external_id": "Video Title",
+                  "id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l",
+                  "status": "COMPLETED"
+                }
+              ]
+            ]
+          },
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Pagination"
+              }
+            ],
+            "examples": [
+              {
+                "page": 0,
+                "page_size": 50,
+                "total_results": 1
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "media",
+          "pagination"
+        ],
+        "title": "GetCollectionResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IndexMediaRequest": {
+        "properties": {
+          "collection_id": {
+            "type": "string",
+            "title": "Collection Id",
+            "description": "The ID of the collection to add the video to",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          },
+          "media_list": {
+            "items": {
+              "$ref": "#/components/schemas/NewMediaItem"
+            },
+            "type": "array",
+            "title": "Media List",
+            "description": "List of videos to add. Maximum 10 media can be added per request",
+            "examples": [
+              {
+                "external_id": "video_1",
+                "title": "My Video1",
+                "url": "https//example.com/video1.mp4"
+              },
+              {
+                "external_id": "video_2",
+                "title": "My Video2",
+                "url": "https//example.com/video2.mp4"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "collection_id",
+          "media_list"
+        ],
+        "title": "IndexMediaRequest"
+      },
+      "IndexMediaResponse": {
+        "properties": {
+          "media_list": {
+            "items": {
+              "$ref": "#/components/schemas/MediaStub"
+            },
+            "type": "array",
+            "title": "Media List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "media_list"
+        ],
+        "title": "IndexMediaResponse"
+      },
+      "ListCollectionsResponse": {
+        "properties": {
+          "collections": {
+            "items": {
+              "$ref": "#/components/schemas/Collection"
+            },
+            "type": "array",
+            "title": "Collections",
+            "examples": [
+              [
+                {
+                  "id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l",
+                  "name": "Collection 1"
+                },
+                {
+                  "id": "a1b2c3d4-5e6f-7g8h-9i0j-1k2l3m4n5o6",
+                  "name": "Collection 2"
+                }
+              ]
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "collections"
+        ],
+        "title": "ListCollectionsResponse"
+      },
+      "MediaSegment": {
+        "properties": {
+          "start_ms": {
+            "type": "integer",
+            "title": "Start Ms",
+            "description": "Start time of the segment in milliseconds",
+            "examples": [
+              0
+            ]
+          },
+          "end_ms": {
+            "type": "integer",
+            "title": "End Ms",
+            "description": "End time of the segment in milliseconds",
+            "examples": [
+              1000
+            ]
+          },
+          "embedding": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Embedding",
+            "description": "The embedding of the segment, a list of 512 floats"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "The description of the segment",
+            "examples": [
+              "People walking in the park"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "start_ms",
+          "end_ms",
+          "embedding",
+          "description"
+        ],
+        "title": "MediaSegment"
+      },
+      "MediaStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "PROCESSING",
+          "COMPLETED",
+          "FAILED"
+        ],
+        "title": "MediaStatus"
+      },
+      "MediaStub": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The ID of the video. Use this ID to retrieve task status, metadata and embedding of video",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id",
+            "examples": [
+              "video_12345"
+            ]
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaStatus"
+              }
+            ],
+            "description": "The status of the video understanding (e.g. indexing, embedding) job"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "external_id",
+          "status"
+        ],
+        "title": "MediaStub"
+      },
+      "MediaWithSegments": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The ID of the video. Use this ID to retrieve task status, metadata and embedding of video",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id",
+            "examples": [
+              "video_12345"
+            ]
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MediaStatus"
+              }
+            ],
+            "description": "The status of the video understanding (e.g. indexing, embedding) job"
+          },
+          "collection_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collection Id",
+            "description": "The ID of the collection the video belongs to. Only present if the video is indexed in a collection",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "examples": [
+              "My Video"
+            ]
+          },
+          "segments": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MediaSegment"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Segments",
+            "description": "Segments of the video with embeddings and/or descriptions if available"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "external_id",
+          "status",
+          "collection_id",
+          "title",
+          "segments"
+        ],
+        "title": "MediaWithSegments"
+      },
+      "NewMediaItem": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "The http or https URL to the raw video file. URL link to web page containing the video (e.g. Youtube Link), cloud storage services uri (e.g. uri starts with gs://) are not supported.",
+            "examples": [
+              "https://example.com/video.mp4"
+            ]
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id",
+            "description": "User-defined media identifier",
+            "examples": [
+              "video_12345"
+            ]
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "The title of the media displayed in the search results",
+            "examples": [
+              "My Video"
+            ]
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metadata",
+            "description": "User-defined media metadata, including ownership, geo location, etc.",
+            "examples": [
+              {
+                "location": {
+                  "lat": 1.0,
+                  "lon": 2.0
+                },
+                "owner_id": "user_123"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "NewMediaItem"
+      },
+      "Pagination": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size"
+          },
+          "total_results": {
+            "type": "integer",
+            "title": "Total Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "page",
+          "page_size",
+          "total_results"
+        ],
+        "title": "Pagination"
+      },
+      "Scene": {
+        "properties": {
+          "media_id": {
+            "type": "string",
+            "title": "Media Id"
+          },
+          "external_id": {
+            "type": "string",
+            "title": "External Id"
+          },
+          "start_ms": {
+            "type": "number",
+            "title": "Start Ms"
+          },
+          "end_ms": {
+            "type": "number",
+            "title": "End Ms"
+          },
+          "max_similarity": {
+            "type": "number",
+            "title": "Max Similarity"
+          },
+          "fragments": {
+            "items": {
+              "$ref": "#/components/schemas/Fragment"
+            },
+            "type": "array",
+            "title": "Fragments"
+          }
+        },
+        "type": "object",
+        "required": [
+          "media_id",
+          "external_id",
+          "start_ms",
+          "end_ms",
+          "max_similarity",
+          "fragments"
+        ],
+        "title": "Scene"
+      },
+      "SearchConfigs": {
+        "properties": {
+          "smart_remove_false_positive": {
+            "type": "boolean",
+            "title": "Smart Remove False Positive",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "SearchConfigs"
+      },
+      "SearchParams": {
+        "properties": {
+          "collection_id": {
+            "type": "string",
+            "title": "Collection Id"
+          },
+          "media_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Media Ids",
+            "default": []
+          },
+          "search_term": {
+            "type": "string",
+            "title": "Search Term"
+          },
+          "similarity_threshold": {
+            "type": "number",
+            "title": "Similarity Threshold",
+            "default": 0.28
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "default": 0
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 30
+          },
+          "configs": {
+            "$ref": "#/components/schemas/SearchConfigs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "collection_id",
+          "search_term"
+        ],
+        "title": "SearchParams"
+      },
+      "SearchResult": {
+        "properties": {
+          "scenes": {
+            "items": {
+              "$ref": "#/components/schemas/Scene"
+            },
+            "type": "array",
+            "title": "Scenes"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scenes",
+          "metadata"
+        ],
+        "title": "SearchResult"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "src__public_api__media_router__EmbedMediaRequest": {
+        "properties": {
+          "media_list": {
+            "items": {
+              "$ref": "#/components/schemas/NewMediaItem"
+            },
+            "type": "array",
+            "title": "Media List",
+            "description": "List of videos to add. Maximum 10 media can be added per request",
+            "examples": [
+              {
+                "external_id": "video_1",
+                "title": "My Video1",
+                "url": "https//example.com/video1.mp4"
+              },
+              {
+                "external_id": "video_2",
+                "title": "My Video2",
+                "url": "https//example.com/video2.mp4"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "media_list"
+        ],
+        "title": "EmbedMediaRequest"
+      },
+      "src__public_api__media_router__EmbedMediaResponse": {
+        "properties": {
+          "media_list": {
+            "items": {
+              "$ref": "#/components/schemas/MediaStub"
+            },
+            "type": "array",
+            "title": "Media List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "media_list"
+        ],
+        "title": "EmbedMediaResponse"
+      },
+      "src__public_api__widget_router__EmbedMediaRequest": {
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "EmbedMediaRequest"
+      },
+      "src__public_api__widget_router__EmbedMediaResponse": {
+        "properties": {
+          "embed_link": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Embed Link"
+          }
+        },
+        "type": "object",
+        "required": [
+          "embed_link"
+        ],
+        "title": "EmbedMediaResponse"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Collection",
+      "description": "Collection"
+    },
+    {
+      "name": "Video",
+      "description": "Media"
+    },
+    {
+      "name": "Account",
+      "description": "Account"
+    }
+  ],
+  "x-descriptors": [
+    {
+      "type": "article",
+      "title": "Introduction",
+      "content": "tl;dw API"
+    }
+  ]
+}

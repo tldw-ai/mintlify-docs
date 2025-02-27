@@ -1,0 +1,59 @@
+# OS files
+.DS_Store
+
+# Keep environment variables out of version control
+.env.local
+!.env.example
+
+# Node directories
+node_modules
+
+# Custom
+examples
+
+# Next.js build output
+.next
+out
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# IDE / Editor directories
+.idea
+*.swp
+*.swo
+
+# Build output
+.turbo
+build/**
+dist
+
+
+# Misc
+*.pem
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__
+
+
+#certs
+/certs
+
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Ignore js related files outside ts codebase
+!ts/**/package.json
+!ts/**/yarn.lock
+
