@@ -519,7 +519,7 @@
             }
           },
           "404": {
-            "description": "no media ids provided",
+            "description": "no media ids provided.",
             "content": {
               "application/json": {
                 "schema": {
