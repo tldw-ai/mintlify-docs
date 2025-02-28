@@ -22,25 +22,26 @@ By the end, you’ll have made your first successful API calls and received AI-d
 **Set your API key:**
 
 ```bash
-export API_KEY="<YOUR_API_KEY>"
+export token="3726e6ad1c6ce2eb643a268ea2f4682686c9ce33e28561ped915cbf1dbe7ab52"
 ```
 
 ### Create a Collection
 
 A collection is a container for your videos. Let’s create one named `My First Collection`.
 
-```bash title="Request"
-curl -X POST 'https://api.trytldw.ai/v1/collections/' \
-     -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer $API_KEY" \
-     -d '{
-           "name": "My First Collection"
-         }'
+```bash Request
+curl --request POST \
+  --url https://api.trytldw.ai/v1/collections/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "name": "New Collection"
+}'
 ```
 
-```json title="Response"
+```json Response
 {
-  "id": "c7a150ea-744b-4043-b86b-635728daa3a3"
+  "id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
 }
 ```
 
@@ -51,23 +52,30 @@ Note: the URL must point directly at a video file (eg the url ends in a video fi
 
 Feel free to use this video: [https://storage.googleapis.com/tldr-public/static/never\_gonna\_give\_you\_up.mp4](https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4)
 
-```bash title="Request"
-curl -X POST 'https://api.trytldw.ai/v1/media/' \
-     -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer $API_KEY" \
-     -d '{
-           "media_url": "https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4",
-           "collection_id": "c7a150ea-744b-4043-b86b-635728daa3a3",
-           "title": "Rick Astley"
-         }'
+```bash Request
+curl --request POST \
+  --url https://api.trytldw.ai/v1/media/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "collection_id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l",
+  "media_list": {
+    "external_id": "video_1",
+    "title": "My Video1",
+    "url": "https//example.com/video1.mp4"
+  }
+}'
 ```
 
-```json title="Response"
+```json Response
 {
-  "id": "a0ac4924-5c7f-4d0a-940c-568698cd29cb",
-  "title": "My Example Video",
-  "index_status": "PROCESSING",
-  "collection_id": "c7a150ea-744b-4043-b86b-635728daa3a3"
+  "media_list": [
+    {
+      "id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l",
+      "external_id": "video_12345",
+      "status": "PENDING"
+    }
+  ]
 }
 ```
 
@@ -75,94 +83,78 @@ curl -X POST 'https://api.trytldw.ai/v1/media/' \
 
 Indexing might take a moment. Check the status with the collection ID.
 
-```bash title="Request"
-curl -X GET 'https://api.trytldw.ai/v1/collections/collection_12345/media' \
-     -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer $API_KEY"
+```bash Request
+curl --request GET \
+  --url https://api.trytldw.ai/v1/media/{media_id} \
+  --header 'Authorization: Bearer <token>'
 ```
 
-```json title="Response"
-[
-  {
-    "id": "a0ac4924-5c7f-4d0a-940c-568698cd29cb",
-    "title": "Rick Astley",
-    "index_status": "COMPLETED",
-    "collection_id": "c7a150ea-744b-4043-b86b-635728daa3a3"
-    ...
-  }
-]
-```
-
-### Query a Single Video
-
-Ask questions like “What topics are discussed at 10 minutes?” by providing the media\_ids array with a single video’s ID.
-
-```bash title="Request"
-curl -X POST 'https://api.trytldw.ai/v1/query/media' \
-     -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer $API_KEY" \
-     -d '{
-           "query": "find a person doing a backflip",
-           "media_ids": ["a0ac4924-5c7f-4d0a-940c-568698cd29cb"]
-         }'
-```
-
-```json title="Response"
+```json Response
 {
-    "media_hits": {
-        "a0ac4924-5c7f-4d0a-940c-568698cd29cb": [
-            {
-                "media_uuid": "a0ac4924-5c7f-4d0a-940c-568698cd29cb",
-                "segment_start_ms": 30000.0,
-                "segment_end_ms": 32000.0,
-                "score": 0.8939065098762512,
-            },
-            ...
-        ]
-    },
-    "metadata": {}
+  "id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l",
+  "external_id": "video_12345",
+  "status": "COMPLETED",
+  "collection_id": "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l",
+  "title": "My Video",
+  "segments": [
+    {
+      "start_ms": 0,
+      "end_ms": 1000,
+      "embedding": [
+        123
+      ],
+      "description": "People walking in the park"
+    }
+  ]
 }
 ```
 
-### Query an Entire Collection
+### Query Video Collection
 
-Search across all videos in a collection.
+Ask questions like “What topics are discussed at 10 minutes?” by providing the media\_ids array with a single video’s ID.
 
-Feel free to add these to the collection:<br />
-[https://storage.googleapis.com/tldr-public/static/baseball\_goose.mp4](https://storage.googleapis.com/tldr-public/static/baseball_goose.mp4) <br />
-[https://storage.googleapis.com/tldr-public/static/basketball\_game.webm](https://storage.googleapis.com/tldr-public/static/basketball_game.webm) <br />
-[https://storage.googleapis.com/tldr-public/static/keyboard\_cat.webm](https://storage.googleapis.com/tldr-public/static/keyboard_cat.webm) <br />
-[https://storage.googleapis.com/tldr-public/static/never\_gonna\_give\_you\_up.mp4](https://storage.googleapis.com/tldr-public/static/never_gonna_give_you_up.mp4) <br />
-
-```bash title="Request"
-curl -X POST 'https://api.trytldw.ai/v1/query/collection' \
-     -H 'Content-Type: application/json' \
-     -H "Authorization: Bearer $API_KEY" \
-     -d '{
-           "query": "find a flying bird",
-           "collection_id": "394d9ecd-9127-4626-92f0-f8754de77696"
-         }'
+```bash Request
+curl --request POST \
+  --url https://api.trytldw.ai/v1/search/ \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "collection_id": "<string>",
+  "media_ids": [],
+  "search_term": "<string>",
+  "similarity_threshold": 0.28,
+  "offset": 0,
+  "limit": 30,
+  "configs": {
+    "smart_remove_false_positive": false
+  }
+}'
 ```
 
-```json title="Response"
+```json Response
 {
-    "media_hits": {
-        "c7adc81b-d404-4c84-96d1-4e19d736e21c": [
-            {
-                "media_uuid": "c7adc81b-d404-4c84-96d1-4e19d736e21c",
-                "segment_start_ms": 294000.0,
-                "segment_end_ms": 296000.0,
-                "score": 0.90886325687170029,
-            },
-            ...
-        ]
-    },
-    "metadata": {}
+  "scenes": [
+    {
+      "media_id": "<string>",
+      "external_id": "<string>",
+      "start_ms": 123,
+      "end_ms": 123,
+      "max_similarity": 123,
+      "fragments": [
+        {
+          "uuid": "<string>",
+          "start_ms": 123,
+          "end_ms": 123,
+          "similarity": 123,
+          "description": "<string>"
+        }
+      ]
+    }
+  ],
+  "metadata": {}
 }
 ```
 
 ### Next Steps
 
 Congratulations! Explore our Full API Reference for more endpoint details.
-
-[Explore our full API reference here](/category/tldw-api)<u>.</u>
