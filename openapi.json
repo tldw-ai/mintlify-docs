@@ -29,7 +29,7 @@
         "tags": [
           "Index or Embed Videos"
         ],
-        "summary": "Index video(s) in a collection",
+        "summary": "Index videos in a collection",
         "description": "Add videos to a collection for indexing. The videos will be indexed and made searchable. Indexing status or embedding of the video can be retrieved from [get media endpoint](/api-reference/index-or-embed-videos/get-processing-status-embedding-and-metadata-of-video) \n The videos must be http(s) url to raw video files (e.g. mp4, mov, avi) and not web pages or cloud storage services URIs.  The videos url must be http(s) url to raw video files (e.g. mp4, mov, avi); Youtube web pages or cloud storage services URIs would not work.",
         "operationId": "create_media_media__post",
         "requestBody": {
@@ -274,7 +274,7 @@
     "/collections/": {
       "get": {
         "tags": [
-          "Manage a Collection"
+          "Manage Collections"
         ],
         "summary": "List all collections",
         "operationId": "list_collections_collections__get",
@@ -298,7 +298,7 @@
       },
       "post": {
         "tags": [
-          "Manage a Collection"
+          "Manage Collections"
         ],
         "summary": "Create a new collection",
         "operationId": "create_collection_collections__post",
@@ -344,7 +344,7 @@
     "/collections/{collection_id}/media": {
       "get": {
         "tags": [
-          "Manage a Collection"
+          "Manage Collections"
         ],
         "summary": "Retrieve all media in a collection",
         "operationId": "get_collection_collections__collection_id__media_get",
@@ -425,7 +425,7 @@
     "/collections/{collection_id}": {
       "delete": {
         "tags": [
-          "Manage a Collection"
+          "Manage Collections"
         ],
         "summary": "Delete a collection",
         "description": "Warning: All indexed media in the collection will be deleted as well",
@@ -485,7 +485,7 @@
         "tags": [
           "Search Video Moments"
         ],
-        "summary": "Search within video(s)",
+        "summary": "Search within videos",
         "operationId": "search_search__post",
         "requestBody": {
           "content": {
