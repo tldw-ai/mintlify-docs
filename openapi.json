@@ -1309,7 +1309,11 @@
         "properties": {
           "collection_id": {
             "type": "string",
-            "title": "Collection Id"
+            "title": "Collection Id",
+            "description": "The collection UUID to search within",
+            "examples": [
+              "c1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
           },
           "media_ids": {
             "items": {
@@ -1317,29 +1321,66 @@
             },
             "type": "array",
             "title": "Media Ids",
-            "default": []
+            "description": "A list of media UUIDs to filter the search",
+            "examples": [
+              "m1a2b3c4-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+            ]
           },
           "search_term": {
             "type": "string",
-            "title": "Search Term"
+            "title": "Search Term",
+            "description": "The text query used for searching",
+            "examples": [
+              "sunset beach"
+            ]
           },
           "similarity_threshold": {
             "type": "number",
             "title": "Similarity Threshold",
-            "default": 0.28
+            "description": "The minimum similarity score required to presented in search results",
+            "default": 0.28,
+            "examples": [
+              0.28
+            ]
           },
           "offset": {
             "type": "integer",
             "title": "Offset",
-            "default": 0
+            "description": "The pagination offset for search results",
+            "default": 0,
+            "examples": [
+              10
+            ]
           },
           "limit": {
             "type": "integer",
             "title": "Limit",
-            "default": 30
+            "description": "The maximum number of search results to return",
+            "default": 30,
+            "examples": [
+              30
+            ]
           },
           "configs": {
-            "$ref": "#/components/schemas/SearchConfigs"
+            "$ref": "#/components/schemas/SearchConfigs",
+            "description": "Additional configuration options for the search, such as removing false positives"
+          },
+          "filter": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filter",
+            "description": "Optional filters to apply to the search results. For now, it only supports matching value on metadata fields",
+            "examples": [
+              {
+                "user_id": "1221"
+              }
+            ]
           }
         },
         "type": "object",
